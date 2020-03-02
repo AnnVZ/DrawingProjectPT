@@ -9,30 +9,58 @@ public class Ellipse extends Polygon {
 
 	}
 
-	public Ellipse(Color borderColor, Point location, Color color, Point[] points) {
-		super(borderColor, location, color, points);
-	}
-
-	public Ellipse(Color borderColor, int xLocation, int yLocation, Color color, Point[] points) {
-		super(borderColor, new Point(xLocation, yLocation), color, points);
+	public Ellipse(Color borderColor, Point location, Color color, Point point) {
+		super(borderColor, location, color, null);
+		Point[] points = new Point[1];
+		points[0] = point;
+		setPoints(points);
 	}
 
 	public int getWidth() {
-		return 2 * Math.abs(location.x - points[0].x);
+		return 2 * Math.abs(getLocation().x - getPoints()[0].x);
 	}
 
 	public int getHeight() {
-		return 2 * Math.abs(location.y - points[0].y);
+		return 2 * Math.abs(getLocation().y - getPoints()[0].y);
+	}
+
+	public Point getTopLeftRectPoint() {
+		Point p = getPoints()[0];
+		Point l = getLocation();
+		int width = getWidth();
+		int height = getHeight();
+
+		if (l.x >= p.x && l.y >= p.y) {
+			return p;
+		}
+		if (l.x >= p.x && l.y <= p.y) {
+			return new Point(p.x, p.y - height);
+		}
+		if (l.x <= p.x && l.y >= p.y) {
+			return new Point(p.x - width, p.y);
+		}
+		if (l.x <= p.x && l.y <= p.y) {
+			return new Point(p.x - width, p.y - height);
+		}
+		return null;
+	}
+
+	private Ellipse2D createEllipse() {
+		Point topLeftPoint = getTopLeftRectPoint();
+
+		return new Ellipse2D.Double(topLeftPoint.x, topLeftPoint.y, getWidth(), getHeight());
 	}
 
 	@Override
 	public void draw(Graphics graphics, Frame frame) {
 		Point topLeftPoint = getTopLeftRectPoint();
+		int width = getWidth();
+		int height = getHeight();
 
-		graphics.setColor(color);
-		graphics.fillOval(topLeftPoint.x, topLeftPoint.y, getWidth(), getHeight());
-		graphics.setColor(borderColor);
-		graphics.drawOval(topLeftPoint.x, topLeftPoint.y, getWidth(), getHeight());
+		graphics.setColor(getColor());
+		graphics.fillOval(topLeftPoint.x, topLeftPoint.y, width, height);
+		graphics.setColor(getBorderColor());
+		graphics.drawOval(topLeftPoint.x, topLeftPoint.y, width, height);
 	}
 
 	@Override
@@ -43,29 +71,7 @@ public class Ellipse extends Polygon {
 	}
 
 	@Override
-	public boolean contains(int x, int y) {
-		return createEllipse().contains(x, y);
-	}
-
-	private Ellipse2D createEllipse() {
-		Point topLeftPoint = getTopLeftRectPoint();
-
-		return new Ellipse2D.Double(topLeftPoint.x, topLeftPoint.y, getWidth(), getHeight());
-	}
-
-	public Point getTopLeftRectPoint() {
-		if (location.x >= points[0].x && location.y >= points[0].y) {
-			return points[0];
-		}
-		if (location.x >= points[0].x && location.y <= points[0].y) {
-			return new Point(points[0].x, points[0].y - getHeight());
-		}
-		if (location.x <= points[0].x && location.y >= points[0].y) {
-			return new Point(points[0].x - getWidth(), points[0].y);
-		}
-		if (location.x <= points[0].x && location.y <= points[0].y) {
-			return new Point(points[0].x - getWidth(), points[0].y - getHeight());
-		}
-		return null;
+	public boolean contains(Point point) {
+		return createEllipse().contains(point);
 	}
 }

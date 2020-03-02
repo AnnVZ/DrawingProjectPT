@@ -13,7 +13,7 @@ public class DrawingPanel extends JPanel {
     private boolean isDrawing;
 
     {
-        color = Color.RED;
+        color = Color.GREEN;
         figures = new ArrayList<>();
         isDrawing = false;
     }
@@ -35,10 +35,7 @@ public class DrawingPanel extends JPanel {
         public void mousePressed(MouseEvent me) {
             prevX = me.getX();
             prevY = me.getY();
-            Point[] points = new Point[1];
-            points[0] = new Point(prevX, prevY);
-//            figures.add(new Rectangle(color, new Point(prevX, prevY), color, points));
-            figures.add(new Line(color, new Point(prevX, prevY), new Point(prevX, prevY)));
+            figures.add(new RegularPolygon(Color.BLACK, new Point(prevX, prevY), color, new Point(prevX, prevY), 5));
             isDrawing = true;
         }
 
@@ -54,10 +51,9 @@ public class DrawingPanel extends JPanel {
             prevY = me.getY();
 
             Figure f = figures.get(figures.size() - 1);
-//            Point point = ((Rectangle) f).getPoints()[0];
+            Point point = ((RegularPolygon) f).getPoints()[0];
 
-//            f.setLocation((prevX + point.x) / 2, (prevY + point.y) / 2);
-            ((Shape1D) f).setSecondPoint(prevX, prevY);
+            f.setLocation(new Point(prevX, prevY));
         }
 
         public void mouseMoved(MouseEvent e) {
@@ -71,14 +67,15 @@ public class DrawingPanel extends JPanel {
 
         Graphics2D f = (Graphics2D) g;
         f.setStroke(new BasicStroke(0.6f));
+
         for (Figure figure: figures) {
             figure.draw(g, frame);
         }
 
-        f.setStroke(new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 2, new float[]{5f, 5f}, 0f));
+        f.setStroke(new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 2, new float[] {5f, 5f}, 0f));
         f.setColor(Color.GRAY);
         f.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        if (isDrawing && figures.get(figures.size() - 1) instanceof Shape2D) {
+        if (!figures.isEmpty() && isDrawing && figures.get(figures.size() - 1) instanceof Shape2D) {
             ((Shape2D) figures.get(figures.size() - 1)).drawServiceLines(g);
         }
     }

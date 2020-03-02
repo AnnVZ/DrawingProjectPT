@@ -4,54 +4,52 @@ import java.awt.*;
 
 public class Line extends Ray {
 
-	public Line() {
+    public Line() {
 
-	}
+    }
 
-	public Line(Color borderColor, Point location, Point secondPoint) {
-		super(borderColor, location, secondPoint);
-	}
+    public Line(Color borderColor, Point location, Point secondPoint) {
+        super(borderColor, location, secondPoint);
+    }
 
-	public Line(Color borderColor, int xLocation, int yLocation, int x, int y) {
-		super(borderColor, new Point(xLocation, yLocation), new Point(x, y));
-	}
+    private Point[] getEndPointsToDraw(Frame frame) {
+        Point[] endPoints = new Point[2];
+        Point secondPoint = getSecondPoint();
+        Point location = getLocation();
 
-	@Override
-	public void draw(Graphics graphics, Frame frame) {
-		if (location.equals(secondPoint)) {
-			graphics.setColor(borderColor);
-			graphics.drawLine(location.x, location.y, secondPoint.x, secondPoint.y);
-		} else {
-			Point[] endPoints = getEndPointsToDraw(frame);
+        if (location.equals(secondPoint)) {
+            endPoints[0] = new Point(location);
+            endPoints[1] = new Point(secondPoint);
 
-			graphics.setColor(borderColor);
-			graphics.drawLine(endPoints[0].x, endPoints[0].y, endPoints[1].x, endPoints[1].y);
-		}
-	}
+            return endPoints;
+        }
 
-	private Point[] getEndPointsToDraw(Frame frame) {
-		int width = frame.getWidth();
-		int height = frame.getHeight();
+        int width = frame.getWidth();
+        int height = frame.getHeight();
 
-		Point[] endPoints = new Point[2];
+        if (location.x != secondPoint.x) {
+            endPoints[0] = new Point(0, valueOfLineAtPoint(0));
+            endPoints[1] = new Point(width, valueOfLineAtPoint(width));
+        } else {
+            endPoints[0] = new Point(location.x, 0);
+            endPoints[1] = new Point(location.x, height);
+        }
 
-		if (location.x != secondPoint.x) {
-			//y = a * x + b
-			double a = (0.0 + location.y - secondPoint.y) / (0.0 + location.x - secondPoint.x);
-			double b = location.y - a * location.x;
+        return endPoints;
+    }
 
-			endPoints[0] = new Point(0, (int) b);
-			endPoints[1] = new Point(width, (int) (a * width + b));
-		} else {
-			endPoints[0] = new Point(location.x, 0);
-			endPoints[1] = new Point(location.x, height);
-		}
+    @Override
+    public void draw(Graphics graphics, Frame frame) {
+        Point[] endPoints = getEndPointsToDraw(frame);
 
-		return endPoints;
-	}
+        graphics.setColor(getBorderColor());
+        graphics.drawLine(endPoints[0].x, endPoints[0].y, endPoints[1].x, endPoints[1].y);
+    }
 
-	@Override
-	public boolean contains(int x, int y) {
-		return (location.x == secondPoint.x && location.x == x) || valueOfLineAtPoint(x) == y;
-	}
+    @Override
+    public boolean contains(Point point) {
+        Point location = getLocation();
+
+        return (location.x == getSecondPoint().x && location.x == point.x) || valueOfLineAtPoint(point.x) == point.y;
+    }
 }

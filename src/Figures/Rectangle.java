@@ -8,45 +8,45 @@ public class Rectangle extends Polygon {
 
 	}
 
-	public Rectangle(Color borderColor, Point location, Color color, Point[] points) {
-		super(borderColor, location, color, points);
-	}
-
-	public Rectangle(Color borderColor, int xLocation, int yLocation, Color color, Point[] points) {
-		super(borderColor, new Point(xLocation, yLocation), color, points);
+	public Rectangle(Color borderColor, Point location, Color color, Point point) {
+		super(borderColor, location, color, null);
+		Point[] points = new Point[1];
+		points[0] = point;
+		setPoints(points);
 	}
 
 	public int getWidth() {
-		return 2 * Math.abs(location.x - points[0].x);
+		return 2 * Math.abs(getLocation().x - getPoints()[0].x);
 	}
 
 	public int getHeight() {
-		return 2 * Math.abs(location.y - points[0].y);
+		return 2 * Math.abs(getLocation().y - getPoints()[0].y);
 	}
 
-	@Override
-	public void draw(Graphics graphics, Frame frame) {
-		Point topLeftPoint = getTopLeftRectPoint();
+	public Point getTopLeftRectPoint() {
+		Point p = getPoints()[0];
+		Point l = getLocation();
+		int width = getWidth();
+		int height = getHeight();
 
-		graphics.setColor(color);
-		graphics.fillRect(topLeftPoint.x, topLeftPoint.y, getWidth(), getHeight());
-		graphics.setColor(borderColor);
-		graphics.drawRect(topLeftPoint.x, topLeftPoint.y, getWidth(), getHeight());
+		if (l.x >= p.x && l.y >= p.y) {
+			return p;
+		}
+		if (l.x >= p.x && l.y <= p.y) {
+			return new Point(p.x, p.y - height);
+		}
+		if (l.x <= p.x && l.y >= p.y) {
+			return new Point(p.x - width, p.y);
+		}
+		if (l.x <= p.x && l.y <= p.y) {
+			return new Point(p.x - width, p.y - height);
+		}
+		return null;
 	}
 
-	@Override
-	public void drawServiceLines(Graphics graphics) {
-		Point topLeftPoint = getTopLeftRectPoint();
-
-		graphics.drawLine(topLeftPoint.x, topLeftPoint.y, topLeftPoint.x + getWidth(), topLeftPoint.y + getHeight());
-		graphics.drawLine(topLeftPoint.x + getWidth(), topLeftPoint.y, topLeftPoint.x, topLeftPoint.y + getHeight());
-	}
-
-	private java.awt.Polygon createPolygon() {
-		int n = 4;
-
-		int[] xPoints = new int[n];
-		int[] yPoints = new int[n];
+	public java.awt.Polygon createPolygon() {
+		int[] xPoints = new int[4];
+		int[] yPoints = new int[4];
 
 		Point topLeftPoint = getTopLeftRectPoint();
 
@@ -56,22 +56,16 @@ public class Rectangle extends Polygon {
 		xPoints[2] = xPoints[1] = topLeftPoint.x + getWidth();
 		yPoints[2] = yPoints[3] = topLeftPoint.y + getHeight();
 
-		return new java.awt.Polygon(xPoints, yPoints, n);
+		return new java.awt.Polygon(xPoints, yPoints, xPoints.length);
 	}
 
-	public Point getTopLeftRectPoint() {
-		if (location.x >= points[0].x && location.y >= points[0].y) {
-			return points[0];
-		}
-		if (location.x >= points[0].x && location.y <= points[0].y) {
-			return new Point(points[0].x, points[0].y - getHeight());
-		}
-		if (location.x <= points[0].x && location.y >= points[0].y) {
-			return new Point(points[0].x - getWidth(), points[0].y);
-		}
-		if (location.x <= points[0].x && location.y <= points[0].y) {
-			return new Point(points[0].x - getWidth(), points[0].y - getHeight());
-		}
-		return null;
+	@Override
+	public void drawServiceLines(Graphics graphics) {
+		Point topLeftPoint = getTopLeftRectPoint();
+		int width = getWidth();
+		int height = getHeight();
+
+		graphics.drawLine(topLeftPoint.x, topLeftPoint.y, topLeftPoint.x + width, topLeftPoint.y + height);
+		graphics.drawLine(topLeftPoint.x + width, topLeftPoint.y, topLeftPoint.x, topLeftPoint.y + height);
 	}
 }

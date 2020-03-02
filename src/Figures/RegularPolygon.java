@@ -10,68 +10,12 @@ public class RegularPolygon extends Polygon {
 
 	}
 
-	public RegularPolygon(Color borderColor, Point location, Color color, Point[] points, int number) {
-		super(borderColor, location, color, points);
+	public RegularPolygon(Color borderColor, Point location, Color color, Point point, int number) {
+		super(borderColor, location, color, null);
 		this.number = number;
-	}
-
-	public RegularPolygon(Color borderColor, int xLocation, int yLocation, Color color, Point[] points, int number) {
-		super(borderColor, new Point(xLocation, yLocation), color, points);
-		this.number = number;
-	}
-
-	@Override
-	public void draw(Graphics graphics, Frame frame) {
-		java.awt.Polygon polygon = createPolygon();
-
-		graphics.setColor(color);
-		graphics.fillPolygon(polygon);
-		graphics.setColor(borderColor);
-		graphics.drawPolygon(polygon);
-	}
-
-    @Override
-    public void drawServiceLines(Graphics graphics) {
-		java.awt.Polygon polygon = createPolygon();
-
-		for (int i = 0; i < number; ++i) {
-			graphics.drawLine(location.x, location.y, polygon.xpoints[i], polygon.ypoints[i]);
-		}
-    }
-
-	private java.awt.Polygon createPolygon() {
-		double angle = 360.0 / number;
-
-		int[] xPoints = new int[number];
-		int[] yPoints = new int[number];
-
-		int[] xV= new int[number];
-		int[] yV= new int[number];
-
-		xV[0] = points[0].x - location.x;
-		yV[0] = points[0].y - location.y;
-		for (int i = 1; i < number; ++i) {
-			xV[i] = (int)(xV[i - 1] * Math.cos(angle) - yV[i - 1] * Math.sin(angle));
-			yV[i] = (int)(xV[i - 1] * Math.sin(angle) + yV[i - 1] * Math.cos(angle));
-		}
-
-		for (int i = 0; i < number; ++i) {
-			xPoints[0] = xV[i] + location.x;
-			yPoints[0] = yV[i] + location.y;
-		}
-
-//		xPoints[0] = points[0].x;
-//		yPoints[0] = points[0].y;
-//		for (int i = 1; i < number; ++i) {
-//			xPoints[i] = (int)(xPoints[i - 1] * Math.cos(angle) - yPoints[i - 1] * Math.sin(angle)) + location.x;
-//			yPoints[i] = (int)(xPoints[i - 1] * Math.sin(angle) + yPoints[i - 1] * Math.cos(angle)) + location.y;
-//		}
-
-		return new java.awt.Polygon(xPoints, yPoints, number);
-	}
-
-	public Point getPointOnCircle() {
-		return points[0];
+		Point[] points = new Point[1];
+		points[0] = point;
+		setPoints(points);
 	}
 
 	public int getNumber() {
@@ -81,4 +25,44 @@ public class RegularPolygon extends Polygon {
 	public void setNumber(int number) {
 		this.number = number;
 	}
+
+	public Point getPointOnCircle() {
+		return getPoints()[0];
+	}
+
+	public java.awt.Polygon createPolygon() {
+		double angle = 2 * Math.PI / number;
+
+		int[] xPoints = new int[number];
+		int[] yPoints = new int[number];
+
+		double[] xV = new double[number];
+		double[] yV = new double[number];
+
+		Point location = getLocation();
+		Point point = getPointOnCircle();
+
+		xV[0] = point.x - location.x;
+		yV[0] = point.y - location.y;
+		for (int i = 1; i < number; ++i) {
+			xV[i] = (int) (xV[i - 1] * Math.cos(angle) - yV[i - 1] * Math.sin(angle));
+			yV[i] = (int) (xV[i - 1] * Math.sin(angle) + yV[i - 1] * Math.cos(angle));
+		}
+
+		for (int i = 0; i < number; ++i) {
+			xPoints[i] = (int) xV[i] + location.x;
+			yPoints[i] = (int) yV[i] + location.y;
+		}
+
+		return new java.awt.Polygon(xPoints, yPoints, number);
+	}
+
+    @Override
+    public void drawServiceLines(Graphics graphics) {
+		java.awt.Polygon polygon = createPolygon();
+
+		for (int i = 0; i < number; ++i) {
+			graphics.drawLine(getLocation().x, getLocation().y, polygon.xpoints[i], polygon.ypoints[i]);
+		}
+    }
 }

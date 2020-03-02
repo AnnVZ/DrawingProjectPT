@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Polyline extends Shape1D {
 
-	private Figures.Segment[] segments;
+	private Segment[] segments;
 
 	public Polyline() {
 
@@ -15,8 +15,11 @@ public class Polyline extends Shape1D {
 		this.segments = segments;
 	}
 
-	public Polyline(Color borderColor, int xLocation, int yLocation, Point secondPoint, Segment[] segments) {
-		super(borderColor, new Point(xLocation, yLocation), secondPoint);
+	public Segment[] getSegments() {
+		return segments;
+	}
+
+	public void setSegments(Segment[] segments) {
 		this.segments = segments;
 	}
 
@@ -37,20 +40,12 @@ public class Polyline extends Shape1D {
 	}
 
     @Override
-    public boolean contains(int x, int y) {
+    public boolean contains(Point point) {
 		for (Segment segment : segments) {
-			if (segment.contains(x, y)) {
+			if (segment.contains(point)) {
 				return true;
 			}
 		}
 		return false;
     }
-
-    public Segment[] getSegments() {
-		return segments;
-	}
-
-	public void setSegments(Segment[] segments) {
-		this.segments = segments;
-	}
 }

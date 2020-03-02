@@ -4,7 +4,7 @@ import java.awt.*;
 
 public abstract class Shape1D extends Figure {
 
-	protected Point secondPoint;
+	private Point secondPoint;
 	/*
 		secondPoint:
 
@@ -23,35 +23,13 @@ public abstract class Shape1D extends Figure {
 			regular polygon - central point
 	*/
 
-	public Shape1D() {
+	protected Shape1D() {
 
 	}
 
-	public Shape1D(Color borderColor, Point location, Point secondPoint) {
+	protected Shape1D(Color borderColor, Point location, Point secondPoint) {
 		super(borderColor, location);
 		this.secondPoint = secondPoint;
-	}
-
-	public Shape1D(Color borderColor, int xLocation, int yLocation, int x, int y) {
-		super(borderColor, new Point(xLocation, yLocation));
-		this.secondPoint = new Point(x, y);
-	}
-
-	@Override
-	public void move(int xDifference, int yDifference) {
-		location.x += xDifference;
-		location.y += yDifference;
-	}
-
-	protected int valueOfLineAtPoint(int x) {
-		if (location.x == secondPoint.x) {
-			return -1;
-		}
-		//y = a * x + b
-		int a = (location.y - secondPoint.y) / (location.x - secondPoint.x);
-		int b = location.y - a * location.x;
-
-		return a * x + b;
 	}
 
 	public Point getSecondPoint() {
@@ -62,7 +40,26 @@ public abstract class Shape1D extends Figure {
 		this.secondPoint = point;
 	}
 
-	public void setSecondPoint(int x, int y) {
-		this.secondPoint = new Point(x, y);
+	protected int valueOfLineAtPoint(int x) {
+		Point location = getLocation();
+
+		if (location.x == secondPoint.x) {
+			return -1;
+		}
+
+		//y = a * x + b
+		int a = (location.y - secondPoint.y) / (location.x - secondPoint.x);
+		int b = location.y - a * location.x;
+
+		return a * x + b;
+	}
+
+	@Override
+	public void move(int xDifference, int yDifference) {
+		Point location = getLocation();
+		setLocation(new Point(location.x + xDifference, location.y + yDifference));
+
+		secondPoint.x += xDifference;
+		secondPoint.y += yDifference;
 	}
 }
