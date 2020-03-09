@@ -48,10 +48,10 @@ public abstract class Shape1D extends Figure {
 		}
 
 		//y = a * x + b
-		int a = (location.y - secondPoint.y) / (location.x - secondPoint.x);
-		int b = location.y - a * location.x;
+		double a = (0.0 + location.y - secondPoint.y) / (location.x - secondPoint.x + 0.0);
+		double b = location.y - a * location.x;
 
-		return a * x + b;
+		return (int) (a * x + b);
 	}
 
 	@Override

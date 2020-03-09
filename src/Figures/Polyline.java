@@ -10,8 +10,8 @@ public class Polyline extends Shape1D {
 
 	}
 
-	public Polyline(Color borderColor, Point location, Point secondPoint, Segment[] segments) {
-		super(borderColor, location, secondPoint);
+	public Polyline(Color borderColor, Point location, Segment[] segments) {
+		super(borderColor, location, location);
 		this.segments = segments;
 	}
 
