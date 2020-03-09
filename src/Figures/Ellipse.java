@@ -5,15 +5,8 @@ import java.awt.geom.Ellipse2D;
 
 public class Ellipse extends Polygon {
 
-	public Ellipse() {
-
-	}
-
 	public Ellipse(Color borderColor, Point location, Color color, Point point) {
-		super(borderColor, location, color, null);
-		Point[] points = new Point[1];
-		points[0] = point;
-		setPoints(points);
+		super(borderColor, location, color, point, 1);
 	}
 
 	public int getWidth() {

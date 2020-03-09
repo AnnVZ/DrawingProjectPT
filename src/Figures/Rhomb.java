@@ -4,15 +4,8 @@ import java.awt.*;
 
 public class Rhomb extends Polygon {
 
-	public Rhomb() {
-
-	}
-
 	public Rhomb(Color borderColor, Point location, Color color, Point point) {
-		super(borderColor, location, color, null);
-		Point[] points = new Point[1];
-		points[0] = point;
-		setPoints(points);
+		super(borderColor, location, color, point, 1);
 	}
 
 	public int getWidth() {

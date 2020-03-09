@@ -6,16 +6,9 @@ public class RegularPolygon extends Polygon {
 
 	private int number;
 
-	public RegularPolygon() {
-
-	}
-
 	public RegularPolygon(Color borderColor, Point location, Color color, Point point, int number) {
-		super(borderColor, location, color, null);
+		super(borderColor, location, color, point, 1);
 		this.number = number;
-		Point[] points = new Point[1];
-		points[0] = point;
-		setPoints(points);
 	}
 
 	public int getNumber() {

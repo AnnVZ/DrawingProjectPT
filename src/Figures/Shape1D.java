@@ -4,28 +4,22 @@ import java.awt.*;
 
 public abstract class Shape1D extends Figure {
 
+	/**
+	 * 			segment - second selected point
+	 * 			ray - second selected point (indicates direction of the ray)
+	 * 			line - second selected point
+	 * 			polyline - empty
+	 *
+	 * 			polygon - first selected point
+	 * 			ellipse - central point
+	 * 			circle - central point
+	 * 			triangle - first selected point
+	 * 			rectangle - central point
+	 * 			square - central point
+	 * 			rhomb - central point
+	 * 			regular polygon - central point
+	 */
 	private Point secondPoint;
-	/*
-		secondPoint:
-
-			segment - second selected point
-			ray - second selected point (indicates direction of the ray)
-			line - second selected point
-			polyline - empty
-
-			polygon - first selected point
-			ellipse - central point
-			circle - central point
-			triangle - first selected point
-			rectangle - central point
-			square - central point
-			rhomb - central point
-			regular polygon - central point
-	*/
-
-	protected Shape1D() {
-
-	}
 
 	protected Shape1D(Color borderColor, Point location, Point secondPoint) {
 		super(borderColor, location);

@@ -4,25 +4,24 @@ import java.awt.*;
 
 public class Polygon extends Shape2D {
 
+	/**
+	 * 			polygon - all polygon points
+	 * 			ellipse - first point
+	 * 			circle - first point
+	 * 			triangle - all three points as triangle is not regular
+	 * 			rectangle - first point
+	 * 			square - first point
+	 * 			rhomb - first point
+	 * 			regular polygon - point on circle (first selected point)
+	 */
 	private Point[] points;
-	/*
-		points:
-			polygon - all polygon points
-			ellipse - first point
-			circle - first point
-			triangle - all three points as triangle is not regular
-			rectangle - first point
-			square - first point
-			rhomb - first point
-			regular polygon - point on circle (first selected point)
-	*/
 
-    public Polygon() {
-
-	}
-
-	public Polygon(Color borderColor, Point location, Color color, Point[] points) {
+	public Polygon(Color borderColor, Point location, Color color, Point point, int num) {
 		super(borderColor, location, color);
+		Point[] points = new Point[num];
+		for (int i = 0; i < num; i++) {
+			points[i] = new Point(point);
+		}
 		this.points = points;
 	}
 

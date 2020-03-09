@@ -4,10 +4,6 @@ import java.awt.*;
 
 public class Segment extends Shape1D {
 
-	public Segment() {
-
-	}
-
 	public Segment(Color borderColor, Point location, Point secondPoint) {
 		super(borderColor, location, secondPoint);
 	}

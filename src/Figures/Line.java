@@ -4,10 +4,6 @@ import java.awt.*;
 
 public class Line extends Ray {
 
-    public Line() {
-
-    }
-
     public Line(Color borderColor, Point location, Point secondPoint) {
         super(borderColor, location, secondPoint);
     }

@@ -6,12 +6,12 @@ public class Polyline extends Shape1D {
 
 	private Segment[] segments;
 
-	public Polyline() {
-
-	}
-
-	public Polyline(Color borderColor, Point location, Segment[] segments) {
+	public Polyline(Color borderColor, Point location, Point point, int num) {
 		super(borderColor, location, location);
+		Segment[] segments = new Segment[num];
+		for (int i = 0; i < num; i++) {
+			segments[i] = new Segment(borderColor, new Point(point), new Point(point));
+		}
 		this.segments = segments;
 	}
 

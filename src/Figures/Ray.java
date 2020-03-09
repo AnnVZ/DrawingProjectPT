@@ -4,10 +4,6 @@ import java.awt.*;
 
 public class Ray extends Segment {
 
-    public Ray() {
-
-    }
-
     public Ray(Color borderColor, Point location, Point secondPoint) {
         super(borderColor, location, secondPoint);
     }

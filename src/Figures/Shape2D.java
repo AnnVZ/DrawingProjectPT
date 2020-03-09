@@ -6,10 +6,6 @@ public abstract class Shape2D extends Figure {
 
 	private Color color;
 
-	protected Shape2D() {
-
-	}
-
 	protected Shape2D(Color borderColor, Point location, Color color) {
 		super(borderColor, location);
 		this.color = color;

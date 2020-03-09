@@ -6,28 +6,22 @@ public abstract class Figure {
 
 	private Color borderColor;
 
+	/**
+	 * 			segment - first selected point
+	 * 			ray - first selected point (beginning of the ray)
+	 * 			line - first selected point
+	 * 			polyline - first selected point
+	 *
+	 * 			polygon - first selected point
+	 * 			ellipse - central point
+	 * 			circle - central point
+	 * 			triangle - first selected point
+	 * 			rectangle - central point
+	 * 			square - central point
+	 * 			rhomb - central point
+	 * 			regular polygon - central point (second selected)
+	 */
 	private Point location;
-	/*
-		location:
-
-			segment - first selected point
-			ray - first selected point (beginning of the ray)
-			line - first selected point
-			polyline - first selected point
-
-			polygon - first selected point
-			ellipse - central point
-			circle - central point
-			triangle - first selected point
-			rectangle - central point
-			square - central point
-			rhomb - central point
-			regular polygon - central point (second selected)
-	*/
-
-	protected Figure() {
-
-	}
 
 	protected Figure(Color borderColor, Point location) {
 		this.borderColor = borderColor;
